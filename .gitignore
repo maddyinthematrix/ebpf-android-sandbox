@@ -1,0 +1,16 @@
+# Compiled Object files
+*.o
+*.bpf.o
+
+# Output directory
+.output/
+
+# Executables
+sandbox
+
+# Auto-generated skeleton headers
+*.skel.h
+
+# OS generated files
+.DS_Store
+Thumbs.db

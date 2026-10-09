@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBPF Sandbox Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for Live Graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo">
+                <div class="shield-icon">🛡️</div>
+                <div class="logo-text">
+                    <h2>eBPF</h2>
+                    <span>Sandbox Analysis</span>
+                </div>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li class="active" data-view="telemetry"><i class="icon">📊</i> Live Telemetry</li>
+                    <li data-view="threats"><i class="icon">🎯</i> Threat Intelligence</li>
+                    <li data-view="kernel"><i class="icon">⚙️</i> Kernel Status</li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="toggle-sim-btn" class="btn primary-btn">Pause Stream</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar glass-panel">
+                <div class="status-indicator">
+                    <span class="pulse"></span>
+                    <span id="status-text">Kernel Hook Active</span>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Filter by Process or Target...">
+                </div>
+                <div class="device-info">
+                    <span class="badge info">AOSP-x86</span>
+                    <span class="badge warning">Kernel 5.10.103</span>
+                </div>
+            </header>
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon">📥</div>
+                    <div class="stat-info">
+                        <h3>Total Events</h3>
+                        <p id="total-events">1,204</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel critical-card">
+                    <div class="stat-icon" style="color:var(--accent-red)">🚨</div>
+                    <div class="stat-info">
+                        <h3>Critical Alerts</h3>
+                        <p id="critical-alerts">12</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-info">
+                        <h3>Monitored Processes</h3>
+                        <p id="active-processes">8</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <h3>eBPF Overhead</h3>
+                        <p>1.2%</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="content-split">
+                <!-- Chart Section -->
+                <section class="chart-container glass-panel">
+                    <div class="section-header">
+                        <h3>Syscall Frequency (Live)</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="liveChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Live Data Feed Table -->
+                <section class="table-container glass-panel">
+                    <div class="section-header">
+                        <h3>Live Interceptions</h3>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>PID</th>
+                                    <th>Process</th>
+                                    <th>Syscall</th>
+                                    <th>Target Object</th>
+                                    <th>Risk</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-body">
+                                <!-- Rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
